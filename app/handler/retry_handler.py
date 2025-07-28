@@ -1,4 +1,4 @@
-
+import asyncio
 from functools import wraps
 from typing import Callable, TypeVar
 
@@ -34,6 +34,7 @@ class RetryHandler:
                     # 从函数参数中获取 key_manager
                     key_manager = kwargs.get("key_manager")
                     if key_manager:
+                        await asyncio.sleep(60)  # 等待60秒后重试
                         old_key = kwargs.get(self.key_arg)
                         new_key = await key_manager.handle_api_failure(old_key, retries)
                         if new_key:
